@@ -24,14 +24,14 @@ function validate(mass){
 	for(var i=0; i < gl; i++){
 		var dll = mass[i].length;
 		if (dll != 4){
-			str += "неверная длина эллемента или незаполненое поле";
+			str += "РЅРµРІРµСЂРЅР°СЏ РґР»РёРЅР° СЌР»Р»РµРјРµРЅС‚Р° РёР»Рё РЅРµР·Р°РїРѕР»РЅРµРЅРѕРµ РїРѕР»Рµ";
 			res = false;
 		}
 		for(var j = 0; j < dll; j++){
 			if(mass[i][j] != 0 && mass[i][j] != 1 && mass[i][j] != 2 && mass[i][j] != 3 &&
 			mass[i][j] != 4 && mass[i][j] != 5 && mass[i][j] != 6 && mass[i][j] != 7 &&
 			mass[i][j] != 8 && mass[i][j] != 9){
-				str += "неверно введенные данные";
+				str += "РЅРµРІРµСЂРЅРѕ РІРІРµРґРµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ";
 				res = false;
 			}
 		}
@@ -39,7 +39,7 @@ function validate(mass){
 			(mass[i][1] < 0 || mass[i][1] > 9) ||
 			mass[i][2] < 0 || mass[i][2] > 9||
 			(mass[i][3] < 0 || mass[i][3] > 9 || mass[i][3] % 2 != 0)){
-				str += "Ошибка в "+i+" элементе\n";
+				str += "РћС€РёР±РєР° РІ "+i+" СЌР»РµРјРµРЅС‚Рµ\n";
 				res = false;
 			}
 	}
@@ -70,7 +70,7 @@ function Union(A, B){
 		}
 	}
 	var res = res.join(' '); 
-	return "Результат объединения массивов А и В:    " + res;
+	return "Р РµР·СѓР»СЊС‚Р°С‚ РѕР±СЉРµРґРёРЅРµРЅРёСЏ РјР°СЃСЃРёРІРѕРІ Рђ Рё Р’:    " + res;
 }
 
 
@@ -102,9 +102,70 @@ function intersection(A, B){
 		}
 	}
 	var res = res.join(' '); 
-	return "Результат пересечения массивов А и В:    " + res; 
+	return "Р РµР·СѓР»СЊС‚Р°С‚ РїРµСЂРµСЃРµС‡РµРЅРёСЏ РјР°СЃСЃРёРІРѕРІ Рђ Рё Р’:    " + res; 
 }
 
+function addition(A, B){
+	var res = [];
+	var An = [];
+	var k = 0;
+	
+	for(var i = 0; i < A.length; i++){
+		An[i] = A[i];
+	}
+	
+	for (var i = 0; i < A.length; i++){
+		for (var j = 0; j < B.length; j++){
+			if(A[i] == B[j]){
+				res[k] = A[i];
+				k++;
+			}
+		}
+	}
+	k = res.length;
+	
+	for(var i = 0; i < An.length; i++){
+		for(var j = 0; j <= k; j++){
+			if(An[i] == res[j]){
+				An.splice(i,1);
+			}
+		}
+	}
+	
+	An = An.join(' ');
+	return "Р РµР·СѓР»СЊС‚Р°С‚ РґРѕРїРѕР»РЅРµРЅРёСЏ РјР°СЃСЃРёРІРѕРІ Рђ Рё Р’:   " + An;
+}
+
+
+function symmdiff(A, B){
+	var res = [];
+	var k = 0;
+	var obdl = B.length + A.length;
+	
+	for(i = 0; i < A.length; i++){
+		res[i] = A[i];
+	}
+	
+	for(i = A.length; i < obdl; i++){
+		res[i] = B[k];
+		k++;
+	}
+	
+	for(var i = 0; i < obdl; i++){
+		for(var j = 0; j < i; j++){
+			if(res[i] == res[j]){
+				res.splice(i,1);
+				res.splice(j,1);
+				i = 0;
+				j = 1;
+				obdl = obdl - 2;
+			}
+		}
+	}
+
+	var res = res.join(' ');
+	return "Р РµР·СѓР»СЊС‚Р°С‚ СЃРёРјРјРµС‚СЂРёС‡РµСЃРєРѕР№ СЂР°Р·РЅРѕСЃС‚Рё Рђ Рё Р’:    "+ res ;
+}
 
 function getDataUser(){
 	var A = document.getElementById('massA').value;
@@ -124,19 +185,20 @@ function getDataUser(){
 
 	document.getElementById('result1').innerHTML = Union(A,B);
 	document.getElementById('result2').innerHTML = intersection(A,B);
-	
+	document.getElementById('result3').innerHTML = addition(A,B);
+	document.getElementById('result5').innerHTML = symmdiff(A,B);
 }
 
 </script>
 
 <form>
-	Первый массив <input name="A" id='massA'> <br><br>
-	Второй массив <input name="B" id='massB'> <br><br>
-	<input type='button' value='Выполнить операции' onClick="getDataUser()">
+	РџРµСЂРІС‹Р№ РјР°СЃСЃРёРІ <input name="A" id='massA'> <br><br>
+	Р’С‚РѕСЂРѕР№ РјР°СЃСЃРёРІ <input name="B" id='massB'> <br><br>
+	<input type='button' value='Р’С‹РїРѕР»РЅРёС‚СЊ РѕРїРµСЂР°С†РёРё' onClick="getDataUser()">
 </form>
 <div class = "test">
-	<p>примеры ввода</p>
-	<p>	1 - Любое число, 2- Любое число, 3- Любое число, 4- Чётное число</p>
+	<p>РїСЂРёРјРµСЂС‹ РІРІРѕРґР°</p>
+	<p>	1 - Р›СЋР±РѕРµ С‡РёСЃР»Рѕ, 2- Р›СЋР±РѕРµ С‡РёСЃР»Рѕ, 3- Р›СЋР±РѕРµ С‡РёСЃР»Рѕ, 4- Р§С‘С‚РЅРѕРµ С‡РёСЃР»Рѕ</p>
 	
 	<p>-------------------------------------</p>
 
